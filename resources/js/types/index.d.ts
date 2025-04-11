@@ -41,3 +41,27 @@ export interface User {
     updated_at: string;
     [key: string]: unknown; // This allows for additional properties...
 }
+
+export interface TicketFormData {
+    title: string;
+    artist: string;
+    date: string;
+    time: string;
+    venue: string;
+    price: string;
+    description: string;
+}
+
+export interface Ticket {
+    id: number;
+    title: string;
+    artist: string;
+    date: string;
+    time: string;
+    venue: string;
+    price: number;
+    status: 'active' | 'sold_out' | 'canceled' | 'draft';
+    sales: number;
+    imageUrl: string;
+    createdAt: string;
+}
