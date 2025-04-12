@@ -65,3 +65,23 @@ export interface Ticket {
     imageUrl: string;
     createdAt: string;
 }
+
+export interface TicketFiltersProps {
+    searchQuery: string;
+    setSearchQuery: (value: string) => void;
+    statusFilter: string;
+    setStatusFilter: (value: string) => void;
+    sortBy: string;
+    setSortBy: (value: string) => void;
+}
+
+export interface User {
+    id: number;
+    name: string;
+    email: string;
+    role: 'admin' | 'employee' | 'user';
+    created_at: string;
+    updated_at: string;
+    email_verified_at: string;
+    status: 'active' | 'inactive';
+}
