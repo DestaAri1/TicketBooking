@@ -1,21 +1,7 @@
 // src/pages/index.tsx
+import MainNav from '@/components/mainNav-main';
 import { Head, Link } from '@inertiajs/react';
-import {
-    Bell,
-    Calendar,
-    Calendar as CalendarIcon,
-    ChevronDown,
-    Clock,
-    Grid,
-    Home,
-    List,
-    LogOut,
-    MapPin,
-    Music,
-    Search,
-    Settings,
-    User,
-} from 'lucide-react';
+import { Calendar, Clock, Grid, List, MapPin, Music } from 'lucide-react';
 import React, { useState } from 'react';
 
 // Interface untuk tipe data tiket
@@ -96,161 +82,12 @@ const sampleTickets: Ticket[] = [
 
 const ConcertTicketsPage: React.FC = () => {
     const [view, setView] = useState<'grid' | 'list'>('grid');
-    const [userDropdownOpen, setUserDropdownOpen] = useState(false);
-    const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
-    const toggleUserDropdown = () => {
-        setUserDropdownOpen(!userDropdownOpen);
-    };
-
-    const toggleMobileMenu = () => {
-        setMobileMenuOpen(!mobileMenuOpen);
-    };
 
     return (
         <div className="min-h-screen bg-gray-50">
-            <Head title='Home'/>
+            <Head title="Home" />
             {/* Navbar */}
-            <nav className="fixed top-0 z-50 w-full border-b border-gray-200 bg-white shadow-sm">
-                <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                    <div className="flex h-16 items-center justify-between">
-                        {/* Logo and Main Nav */}
-                        <div className="flex items-center">
-                            <div className="flex-shrink-0">
-                                <Link href="/" className="flex items-center">
-                                    <Music className="h-8 w-8 text-purple-600" />
-                                    <span className="ml-2 text-xl font-bold text-gray-900">MusicTix</span>
-                                </Link>
-                            </div>
-
-                            {/* Desktop Navigation */}
-                            <div className="hidden md:ml-8 md:flex md:space-x-4">
-                                <Link href="/" className="flex items-center rounded-md bg-purple-50 px-3 py-2 text-sm font-medium text-purple-600">
-                                    <Home className="mr-1.5 h-4 w-4" />
-                                    Home
-                                </Link>
-                                <Link
-                                    href="/concerts"
-                                    className="flex items-center rounded-md px-3 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50"
-                                >
-                                    <Music className="mr-1.5 h-4 w-4" />
-                                    Concerts
-                                </Link>
-                                <Link
-                                    href="/events"
-                                    className="flex items-center rounded-md px-3 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50"
-                                >
-                                    <CalendarIcon className="mr-1.5 h-4 w-4" />
-                                    Events
-                                </Link>
-                            </div>
-                        </div>
-
-                        {/* Search Bar - Desktop */}
-                        <div className="mx-8 hidden flex-1 md:block">
-                            <div className="relative">
-                                <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                                    <Search className="h-4 w-4 text-gray-400" />
-                                </div>
-                                <input
-                                    type="text"
-                                    placeholder="Search for concerts, artists, venues..."
-                                    className="block w-full rounded-full border-0 py-1.5 pr-4 pl-10 text-gray-900 ring-1 ring-gray-300 ring-inset placeholder:text-gray-400 focus:ring-2 focus:ring-purple-500 sm:text-sm"
-                                />
-                            </div>
-                        </div>
-
-                        {/* Right Side Navigation with User Dropdown */}
-                        <div className="flex items-center space-x-4">
-                            {/* Notification Bell */}
-                            <button className="rounded-full p-1 text-gray-400 hover:bg-gray-100 hover:text-gray-500">
-                                <Bell className="h-6 w-6" />
-                            </button>
-
-                            {/* User Profile Dropdown */}
-                            <div className="relative">
-                                <button
-                                    onClick={toggleUserDropdown}
-                                    className="flex items-center rounded-full text-sm focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 focus:outline-none"
-                                >
-                                    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-r from-purple-400 to-indigo-500 font-medium text-white">
-                                        AB
-                                    </div>
-                                    <span className="ml-2 hidden text-sm font-medium text-gray-700 md:block">Alex Brown</span>
-                                    <ChevronDown className="ml-1 h-4 w-4 text-gray-400" />
-                                </button>
-
-                                {/* Dropdown Menu */}
-                                {userDropdownOpen && (
-                                    <div className="ring-opacity-5 absolute right-0 z-10 mt-2 w-48 rounded-md bg-white py-1 shadow-lg ring-1 ring-black">
-                                        <Link href="/profile" className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                            <User className="mr-2 h-4 w-4" />
-                                            Your Profile
-                                        </Link>
-                                        <Link href="/settings" className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                            <Settings className="mr-2 h-4 w-4" />
-                                            Settings
-                                        </Link>
-                                        <div className="my-1 border-t border-gray-100"></div>
-                                        <Link href="/logout" className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                            <LogOut className="mr-2 h-4 w-4" />
-                                            Sign out
-                                        </Link>
-                                    </div>
-                                )}
-                            </div>
-
-                            {/* Mobile menu button */}
-                            <button
-                                onClick={toggleMobileMenu}
-                                className="inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:ring-2 focus:ring-purple-500 focus:outline-none focus:ring-inset md:hidden"
-                            >
-                                <span className="sr-only">Open main menu</span>
-                                <svg
-                                    className="block h-6 w-6"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    stroke="currentColor"
-                                    aria-hidden="true"
-                                >
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
-                                </svg>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                {/* Mobile menu, show/hide based on menu state */}
-                {mobileMenuOpen && (
-                    <div className="md:hidden">
-                        <div className="space-y-1 px-2 pt-2 pb-3 sm:px-3">
-                            <Link href="/" className="block rounded-md bg-purple-50 px-3 py-2 text-base font-medium text-purple-600">
-                                Home
-                            </Link>
-                            <Link href="/concerts" className="block rounded-md px-3 py-2 text-base font-medium text-gray-600 hover:bg-gray-50">
-                                Concerts
-                            </Link>
-                            <Link href="/events" className="block rounded-md px-3 py-2 text-base font-medium text-gray-600 hover:bg-gray-50">
-                                Events
-                            </Link>
-                        </div>
-                        {/* Mobile Search */}
-                        <div className="px-2 pt-2 pb-3">
-                            <div className="relative">
-                                <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                                    <Search className="h-4 w-4 text-gray-400" />
-                                </div>
-                                <input
-                                    type="text"
-                                    placeholder="Search..."
-                                    className="block w-full rounded-md border-0 py-1.5 pr-4 pl-10 text-gray-900 ring-1 ring-gray-300 ring-inset placeholder:text-gray-400 focus:ring-2 focus:ring-purple-500 sm:text-sm"
-                                />
-                            </div>
-                        </div>
-                    </div>
-                )}
-            </nav>
+            <MainNav />
 
             {/* Header Section */}
             <div className="relative overflow-hidden bg-gradient-to-r from-purple-600 to-indigo-700 pt-16 text-white">

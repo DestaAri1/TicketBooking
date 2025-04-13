@@ -1,14 +1,49 @@
 import { Link } from '@inertiajs/react';
 import { ChevronDown, LogOut, Settings, User } from 'lucide-react';
+import { useEffect, useRef } from 'react';
 
 interface UserDropdownProps {
     userDropdownOpen: boolean;
-    toggleUserDropdown: () => void;
+    toggleUserDropdown: (e: React.MouseEvent) => void;
+    closeUserDropdown: () => void;
 }
 
-export default function MainNavUserDropdown({ userDropdownOpen, toggleUserDropdown }: UserDropdownProps) {
+const UserDropdownItem = [
+    {
+        title: 'Your Profile',
+        href: '/profile',
+        icon: User,
+    },
+    {
+        title: 'Settings',
+        href: '/settings',
+        icon: Settings,
+    }
+];
+
+export default function MainNavUserDropdown({ userDropdownOpen, toggleUserDropdown, closeUserDropdown }: UserDropdownProps) {
+    const dropdownRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        function handleClickOutside(event: MouseEvent) {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node) && userDropdownOpen) {
+                closeUserDropdown();
+            }
+        }
+
+        // Add event listener when dropdown is open
+        if (userDropdownOpen) {
+            document.addEventListener('mousedown', handleClickOutside);
+        }
+
+        // Cleanup event listener
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [userDropdownOpen, closeUserDropdown]);
+
     return (
-        <div className="user-dropdown relative">
+        <div className="user-dropdown relative" ref={dropdownRef}>
             <button
                 onClick={toggleUserDropdown}
                 className="flex items-center rounded-full text-sm focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 focus:outline-none"
@@ -22,14 +57,12 @@ export default function MainNavUserDropdown({ userDropdownOpen, toggleUserDropdo
 
             {userDropdownOpen && (
                 <div className="ring-opacity-5 absolute right-0 z-10 mt-2 w-48 rounded-md bg-white py-1 shadow-lg ring-1 ring-black">
-                    <Link href="/profile" className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                        <User className="mr-2 h-4 w-4" />
-                        Your Profile
-                    </Link>
-                    <Link href="/settings" className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                        <Settings className="mr-2 h-4 w-4" />
-                        Settings
-                    </Link>
+                    {UserDropdownItem.map((item) => (
+                        <Link key={item.title} href={item.href} className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                            <item.icon className="mr-2 h-4 w-4" />
+                            {item.title}
+                        </Link>
+                    ))}
                     <div className="my-1 border-t border-gray-100"></div>
                     <Link href="/logout" className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                         <LogOut className="mr-2 h-4 w-4" />

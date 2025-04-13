@@ -4,11 +4,11 @@ import MainNavMobile from './mainNav-mobileMenu';
 import MainNavNavigation from './mainNav-navigation';
 import MainNavSearchBar from './mainNav-searchBar';
 import MainNavTittle from './mainNav-tittle';
-import MainNavUserDropdown from './mainNav-userDropdown'; // ✅ Import komponen dropdown
+import MainNavUserDropdown from './mainNav-userDropdown';
 import useDropdown from '@/hooks/use-user-dropdown';
 
 export default function MainNav() {
-    const {isDropdownOpen, toggleDropdown} = useDropdown()
+    const {userDropdownOpen, toggleUserDropdown, closeUserDropdown} = useDropdown();
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
     const toggleMobileMenu = () => {
@@ -33,8 +33,12 @@ export default function MainNav() {
                             <Bell className="h-6 w-6" />
                         </button>
 
-                        {/* Komponen User Dropdown */}
-                        <MainNavUserDropdown userDropdownOpen={isDropdownOpen} toggleUserDropdown={toggleDropdown} />
+                        {/* User Dropdown dengan props closeUserDropdown */}
+                        <MainNavUserDropdown
+                            userDropdownOpen={userDropdownOpen}
+                            toggleUserDropdown={toggleUserDropdown}
+                            closeUserDropdown={closeUserDropdown}
+                        />
 
                         {/* Mobile Menu Button */}
                         <button

@@ -10,7 +10,7 @@ import AppLogo from './app-logo';
 const mainNavItems: NavItem[] = [
     {
         title: 'Dashboard',
-        href: '/dashboard',
+        href: route('dashboard'),
         icon: LayoutGrid,
     },
 ];
@@ -18,7 +18,7 @@ const mainNavItems: NavItem[] = [
 const navTicketItems: NavItem[] = [
     {
         title: 'Ticket',
-        href: '/dashboard/ticket',
+        href: route('ticket'),
         icon: Ticket,
     },
 ];
@@ -26,7 +26,7 @@ const navTicketItems: NavItem[] = [
 const navUserItems: NavItem[] = [
     {
         title: 'User',
-        href: '/dashboard/user',
+        href: route('user'),
         icon: User,
     },
 ];
