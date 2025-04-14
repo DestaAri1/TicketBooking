@@ -42,7 +42,7 @@ export default function AddTicket(): JSX.Element {
 
                 {/* Content Card */}
                 <div className="rounded-lg bg-white p-4 transition-all duration-300 sm:p-6 md:p-8">
-                    <form onSubmit={handleSubmit} className="w-full">
+                    <div className="w-full">
                         {/* Main Form Content */}
                         <div className="grid grid-cols-1 gap-4 sm:gap-6 lg:grid-cols-2 lg:gap-8">
                             <TicketFormInputs formData={formData} handleChange={handleChange} />
@@ -148,13 +148,14 @@ export default function AddTicket(): JSX.Element {
                                 Kembali
                             </button>
                             <button
-                                type="submit"
+                                type="button"
+                                onClick={handleSubmit}
                                 className="w-full rounded-lg bg-purple-600 px-4 py-2 text-sm font-medium text-white shadow-md transition-all duration-300 hover:bg-purple-700 sm:w-auto sm:px-6 sm:py-2.5"
                             >
                                 Simpan Tiket
                             </button>
                         </div>
-                    </form>
+                    </div>
                 </div>
             </div>
         </AppLayout>

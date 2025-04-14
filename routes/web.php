@@ -10,11 +10,14 @@ Route::get('/', function () {
     return Inertia::render('welcome');
 })->name('home');
 
-Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
-    Route::get('dashboard/ticket', [TicketController::class, 'index'])->name('ticket');
-    Route::get('dashboard/ticket/add-ticket', [TicketController::class, 'addPage'])->name('add-ticket');
-    Route::get('dashboard/user', [UserController::class, 'index'])->name('user');
+Route::middleware(['auth', 'verified'])->prefix('dashboard')->group(function () {
+    Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+    Route::prefix('/ticket')->group(function() {
+        Route::get('/', [TicketController::class, 'index'])->name('ticket');
+        Route::get('/add-ticket', [TicketController::class, 'addPage'])->name('add-ticket');
+        Route::post('/create-ticket', [TicketController::class, 'create'])->name('create-ticket');
+    });
+    Route::get('/user', [UserController::class, 'index'])->name('user');
 });
 
 require __DIR__.'/settings.php';

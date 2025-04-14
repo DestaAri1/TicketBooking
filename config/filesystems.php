@@ -60,6 +60,13 @@ return [
             'report' => false,
         ],
 
+        'asset' => [
+            'driver' => 'local',
+            'root' => public_path('asset'),
+            'url' => env('APP_URL').'/asset',
+            'visibility' => 'public',
+        ],
+
     ],
 
     /*

@@ -13,7 +13,7 @@ const breadcrumbs: BreadcrumbItem[] = [
 const sampleTickets: Tickets[] = [
     {
         id: 1,
-        title: 'Summer Music Festival',
+        name: 'Summer Music Festival',
         artist: 'Various Artists',
         date: '20 Jun 2025',
         time: '16:00',
@@ -26,7 +26,7 @@ const sampleTickets: Tickets[] = [
     },
     {
         id: 2,
-        title: 'Rock Sensation Concert',
+        name: 'Rock Sensation Concert',
         artist: 'The Amplifiers',
         date: '15 Jul 2025',
         time: '19:30',
@@ -39,7 +39,7 @@ const sampleTickets: Tickets[] = [
     },
     {
         id: 3,
-        title: 'Classical Symphony Night',
+        name: 'Classical Symphony Night',
         artist: 'Metropolitan Orchestra',
         date: '5 Aug 2025',
         time: '20:00',
@@ -52,7 +52,7 @@ const sampleTickets: Tickets[] = [
     },
     {
         id: 4,
-        title: 'Jazz & Blues Evening',
+        name: 'Jazz & Blues Evening',
         artist: 'Smooth Tones Quartet',
         date: '25 Aug 2025',
         time: '21:00',
@@ -65,7 +65,7 @@ const sampleTickets: Tickets[] = [
     },
     {
         id: 5,
-        title: 'Electronic Dance Experience',
+        name: 'Electronic Dance Experience',
         artist: 'DJ Pulse',
         date: '10 Sep 2025',
         time: '22:00',
@@ -78,7 +78,7 @@ const sampleTickets: Tickets[] = [
     },
     {
         id: 6,
-        title: 'Indie Folk Collective',
+        name: 'Indie Folk Collective',
         artist: 'Woodland Echoes',
         date: '28 Sep 2025',
         time: '18:30',
@@ -284,10 +284,10 @@ export default function Dashboard() {
                                 .map((ticket) => (
                                     <div key={ticket.id} className="flex items-center space-x-3">
                                         <div className="h-10 w-10 flex-shrink-0">
-                                            <img src={ticket.imageUrl} alt={ticket.title} className="h-10 w-10 rounded-md object-cover" />
+                                            <img src={ticket.imageUrl} alt={ticket.name} className="h-10 w-10 rounded-md object-cover" />
                                         </div>
                                         <div className="flex-1">
-                                            <p className="text-sm font-medium text-gray-900">{ticket.title}</p>
+                                            <p className="text-sm font-medium text-gray-900">{ticket.name}</p>
                                             <div className="mt-1 flex items-center text-xs text-gray-500">
                                                 <Calendar className="mr-1 h-3 w-3" />
                                                 {ticket.date}

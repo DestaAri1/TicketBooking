@@ -54,7 +54,7 @@ export interface TicketFormData {
 
 export interface Ticket {
     id: number;
-    title: string;
+    name: string;
     artist: string;
     date: string;
     time: string;

@@ -10,7 +10,7 @@ const TicketActionItem = [
     },
     {
         title: 'Add Ticket',
-        href: route('add-ticket'),
+        href: route('dashboard.add-ticket'),
         icon: CirclePlus,
         classname: 'bg-purple-600 text-white hover:bg-purple-700',
     },
