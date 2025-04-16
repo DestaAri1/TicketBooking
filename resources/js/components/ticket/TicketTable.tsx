@@ -49,6 +49,8 @@ export default function TicketTable({
     // Use provided totalItems or fallback to estimate based on current data
     const totalItems = explicitTotalItems !== undefined ? explicitTotalItems : tickets.length;
 
+    console.log(tickets);
+
     return (
         <>
             <Table>
@@ -67,7 +69,11 @@ export default function TicketTable({
                                 <TableCell>
                                     <div className="flex items-center">
                                         <div className="h-10 w-10 flex-shrink-0">
-                                            <img src={ticket.imageUrl} alt={ticket.name} className="h-10 w-10 rounded-md object-cover" />
+                                            <img
+                                                src={ticket.imageUrl}
+                                                alt={ticket.name}
+                                                className="h-10 w-10 rounded-md object-cover"
+                                            />
                                         </div>
 
                                         <div className="ml-4">

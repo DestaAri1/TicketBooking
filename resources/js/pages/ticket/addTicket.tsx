@@ -16,16 +16,17 @@ export interface TicketFormData {
     venue: string;
     price: string;
     description: string;
+    image:string;
 }
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: 'Ticket',
-        href: '/dashboard/ticket',
+        href: route('ticket'),
     },
     {
         title: 'Add Ticket',
-        href: '/dashboard/ticket/add-ticket',
+        href: route('add-ticket'),
     },
 ];
 
@@ -81,7 +82,7 @@ export default function AddTicket(): JSX.Element {
                                         </div>
                                     )}
 
-                                    <Input ref={fileInputRef} type="file" accept="image/*" className="hidden" onChange={handleImageChange} />
+                                    <Input ref={fileInputRef} type="file" accept="image/*" name="image" className="hidden" onChange={handleImageChange} />
                                 </div>
 
                                 {/* Ticket Preview Card */}

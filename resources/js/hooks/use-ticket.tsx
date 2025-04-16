@@ -1,4 +1,3 @@
-// hooks/useTicketForm.ts
 import { TicketFormData } from '@/types';
 import { router } from '@inertiajs/react';
 import { ChangeEvent, useRef, useState } from 'react';
@@ -12,6 +11,7 @@ export const useTicketForm = () => {
         venue: '',
         price: '',
         description: '',
+        image: '',
     });
 
     const [imagePreview, setImagePreview] = useState<string>('');
@@ -29,35 +29,28 @@ export const useTicketForm = () => {
             setImageFile(file);
             const reader = new FileReader();
             reader.onloadend = () => {
-                setImagePreview(reader.result as string);
+                const base64String = reader.result as string;
+                setImagePreview(base64String);
+                // Also update formData with the base64 string
+                setFormData((prev) => ({ ...prev, imagePreview: base64String }));
             };
             reader.readAsDataURL(file);
         }
     };
 
     const handleSubmit = () => {
-        // Create FormData object for file upload
-        const submitData = new FormData();
-        submitData.append('title', formData.title);
-        submitData.append('artist', formData.artist);
-        submitData.append('date', formData.date);
-        submitData.append('time', formData.time);
-        submitData.append('venue', formData.venue);
-        submitData.append('price', formData.price);
-        submitData.append('description', formData.description);
-
-        // Append the image file if it exists
-        if (imageFile) {
-            submitData.append('image', imageFile);
-        }
+        // Create data object for submission including the base64 image
+        const submitData = {
+            ...formData,
+            imagePreview: imagePreview,
+        };
 
         // Log for debugging
         console.group('Ticket Form Submission');
-        console.log('Form data:', formData);
-        console.log('Image file:', imageFile);
+        console.log('Form data:', submitData);
         console.groupEnd();
 
-        // Use Inertia.js to submit the form (with file)
+        // Use Inertia.js to submit the form with the base64 image data
         router.post(route('create-ticket'), submitData);
     };
 

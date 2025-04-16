@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('artist');
             $table->date('date');
-            $table->time('time');
+            $table->string('time');
             $table->string('venue');
             $table->float('price');
             $table->enum('status', [0,1,2,3,4])->default(0);

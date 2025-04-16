@@ -50,6 +50,7 @@ export interface TicketFormData {
     venue: string;
     price: string;
     description: string;
+    image:string;
 }
 
 export interface Ticket {

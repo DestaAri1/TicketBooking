@@ -16,9 +16,9 @@ class Ticket extends Model
         'artist',
         'date',
         'time',
-        'vanue',
+        'venue',
         'price',
         'description',
-        'image',
+        'imageUrl',
     ];
 }

@@ -2,21 +2,26 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\ImageUploader;
 use App\Models\Ticket;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
 use Inertia\Response;
 
 class TicketController extends Controller
 {
-    public function index(): Response
-    {
-        $tickets = Ticket::all();
-        return Inertia::render('ticket', [
-            'tickets' => $tickets,
-        ]);
-    }
+public function index(): Response
+{
+    $tickets = Ticket::all()->map(function($ticket) {
+        // Pastikan imageUrl hanya berisi nama file tanpa folder
+        $ticket->imageUrl = url($ticket->imageUrl);
+        return $ticket;
+    });
+
+    return Inertia::render('ticket', [
+        'tickets' => $tickets,
+    ]);
+}
 
     public function addPage(): Response
     {
@@ -25,46 +30,38 @@ class TicketController extends Controller
 
     public function create(Request $request)
     {
-        $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'artist' => 'required|string|max:255',
-            'date' => 'required|date',
-            'time' => 'required',
-            'venue' => 'required|string|max:255',
-            'price' => 'required|numeric',
-            'description' => 'required|string',
-            'image' => 'required|image|max:5120', // 5MB max
+        // $validated = $request->validate([
+        //     'title' => 'required|string|max:255',
+        //     'artist' => 'required|string|max:255',
+        //     'date' => 'required|date',
+        //     'time' => 'required',
+        //     'venue' => 'required|string|max:255',
+        //     'price' => 'required|numeric',
+        //     'description' => 'required|string',
+        //     'image' => 'required|image|max:5120', // 5MB max
+        // ]);
+
+        // dd($request->all());
+
+        $imagePath = null;
+        if ($request->imagePreview) {
+            $imagePath = ImageUploader::uploadBase64($request->imagePreview);
+        } elseif ($request->hasFile('image') && $request->file('image')->isValid()) {
+            $imagePath = ImageUploader::upload($request->file('image'));
+        }
+
+        // Create the ticket
+        Ticket::create([
+            'name' => $request->title,
+            'artist' => $request->artist,
+            'date' => $request->date,
+            'time' => $request->time,
+            'venue' => $request->venue,
+            'price' => $request->price,
+            'description' => $request->description,
+            'imageUrl' => $imagePath,
         ]);
 
-        dd($validated);
-
-        try {
-            // Handle image upload
-            $imagePath = null;
-            if ($request->hasFile('image')) {
-                $imagePath = $request->file('image')->store('ticket', 'public');
-            }
-
-            // Create the ticket with proper field mapping
-            Ticket::create([
-                'name' => $validated['title'],
-                'artist' => $validated['artist'],
-                'date' => $validated['date'],
-                'time' => $validated['time'],
-                'vanue' => $validated['venue'],
-                'price' => $validated['price'],
-                'description' => $validated['description'],
-                'image' => $imagePath,
-            ]);
-
-            return redirect()->route('dashboard.ticket')->with('success', 'Ticket created successfully!');
-        } catch (\Exception $e) {
-            // Log the error for debugging
-            Log::error('Ticket creation failed: ' . $e->getMessage());
-
-            return redirect()->back()
-                ->withInput()
-                ->with('error', 'Failed to create ticket. Please try again.');
-        }
+        return redirect()->route('ticket')->with('success', 'Ticket created successfully!');
     }
 }
