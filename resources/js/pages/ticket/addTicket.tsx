@@ -8,17 +8,6 @@ import { Head } from '@inertiajs/react';
 import { Image as ImageIcon, Music } from 'lucide-react';
 import { JSX } from 'react';
 
-export interface TicketFormData {
-    title: string;
-    artist: string;
-    date: string;
-    time: string;
-    venue: string;
-    price: string;
-    description: string;
-    image:string;
-}
-
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: 'Ticket',
@@ -31,8 +20,8 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 export default function AddTicket(): JSX.Element {
-    const { formData, imagePreview, fileInputRef, handleChange, handleImageChange, handleSubmit } = useTicketForm();
-
+    const { formData, errors, fieldStatus, imagePreview, fileInputRef, handleChange, handleBlur, handleImageChange, handleSubmit, processing } =
+        useTicketForm();
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
@@ -46,8 +35,14 @@ export default function AddTicket(): JSX.Element {
                     <div className="w-full">
                         {/* Main Form Content */}
                         <div className="grid grid-cols-1 gap-4 sm:gap-6 lg:grid-cols-2 lg:gap-8">
-                            <TicketFormInputs formData={formData} handleChange={handleChange} />
-
+                            {/* Pass errors to the form inputs component */}
+                            <TicketFormInputs
+                                formData={formData}
+                                handleChange={handleChange}
+                                handleBlur={handleBlur}
+                                errors={errors}
+                                fieldStatus={fieldStatus}
+                            />
                             {/* Right Column - Image Upload */}
                             <div className="mt-6 lg:mt-0">
                                 <label className="mb-1 flex items-center text-xs font-medium text-gray-700 sm:mb-2 sm:text-sm">
@@ -56,7 +51,7 @@ export default function AddTicket(): JSX.Element {
                                 </label>
 
                                 <div
-                                    className={`border-2 ${imagePreview ? 'border-purple-400' : 'border-dashed border-gray-300'} cursor-pointer rounded-lg p-3 text-center transition-all duration-300 hover:border-purple-500 sm:p-4`}
+                                    className={`border-2 ${imagePreview ? 'border-purple-400' : 'border-dashed border-gray-300'} ${errors.image ? 'border-red-300 ring-1 ring-red-300' : ''} cursor-pointer rounded-lg p-3 text-center transition-all duration-300 hover:border-purple-500 sm:p-4`}
                                     onClick={() => fileInputRef.current?.click()}
                                 >
                                     {!imagePreview ? (
@@ -82,8 +77,18 @@ export default function AddTicket(): JSX.Element {
                                         </div>
                                     )}
 
-                                    <Input ref={fileInputRef} type="file" accept="image/*" name="image" className="hidden" onChange={handleImageChange} />
+                                    <Input
+                                        ref={fileInputRef}
+                                        type="file"
+                                        accept="image/*"
+                                        name="image"
+                                        className="hidden"
+                                        onChange={handleImageChange}
+                                    />
                                 </div>
+
+                                {/* Display image validation error */}
+                                {errors.image && <p className="mt-1 text-xs font-medium text-red-600">{errors.image}</p>}
 
                                 {/* Ticket Preview Card */}
                                 {imagePreview && (
@@ -151,9 +156,10 @@ export default function AddTicket(): JSX.Element {
                             <button
                                 type="button"
                                 onClick={handleSubmit}
-                                className="w-full rounded-lg bg-purple-600 px-4 py-2 text-sm font-medium text-white shadow-md transition-all duration-300 hover:bg-purple-700 sm:w-auto sm:px-6 sm:py-2.5"
+                                disabled={processing}
+                                className="w-full rounded-lg bg-purple-600 px-4 py-2 text-sm font-medium text-white shadow-md transition-all duration-300 hover:bg-purple-700 disabled:bg-purple-400 sm:w-auto sm:px-6 sm:py-2.5"
                             >
-                                Simpan Tiket
+                                {processing ? 'Menyimpan...' : 'Simpan Tiket'}
                             </button>
                         </div>
                     </div>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\ImageUploader;
+use App\Http\Requests\TicketRequest;
 use App\Models\Ticket;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -10,39 +11,26 @@ use Inertia\Response;
 
 class TicketController extends Controller
 {
-public function index(): Response
-{
-    $tickets = Ticket::all()->map(function($ticket) {
-        // Pastikan imageUrl hanya berisi nama file tanpa folder
-        $ticket->imageUrl = url($ticket->imageUrl);
-        return $ticket;
-    });
+    public function index(): Response
+    {
+        $tickets = Ticket::all()->map(function($ticket) {
+            // Pastikan imageUrl hanya berisi nama file tanpa folder
+            $ticket->imageUrl = url($ticket->imageUrl);
+            return $ticket;
+        });
 
-    return Inertia::render('ticket', [
-        'tickets' => $tickets,
-    ]);
-}
+        return Inertia::render('ticket', [
+            'tickets' => $tickets,
+        ]);
+    }
 
     public function addPage(): Response
     {
         return Inertia::render('ticket/addTicket');
     }
 
-    public function create(Request $request)
+    public function create(TicketRequest $request)
     {
-        // $validated = $request->validate([
-        //     'title' => 'required|string|max:255',
-        //     'artist' => 'required|string|max:255',
-        //     'date' => 'required|date',
-        //     'time' => 'required',
-        //     'venue' => 'required|string|max:255',
-        //     'price' => 'required|numeric',
-        //     'description' => 'required|string',
-        //     'image' => 'required|image|max:5120', // 5MB max
-        // ]);
-
-        // dd($request->all());
-
         $imagePath = null;
         if ($request->imagePreview) {
             $imagePath = ImageUploader::uploadBase64($request->imagePreview);

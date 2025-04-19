@@ -49,8 +49,6 @@ export default function TicketTable({
     // Use provided totalItems or fallback to estimate based on current data
     const totalItems = explicitTotalItems !== undefined ? explicitTotalItems : tickets.length;
 
-    console.log(tickets);
-
     return (
         <>
             <Table>
