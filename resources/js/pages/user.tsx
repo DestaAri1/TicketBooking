@@ -5,7 +5,7 @@ import UserFilters from '@/components/user/UserFilters';
 import UserTable from '@/components/user/UserTable';
 import AppLayout from '@/layouts/app-layout';
 import { BreadcrumbItem, User } from '@/types';
-import { Head } from '@inertiajs/react';
+import { Head, usePage } from '@inertiajs/react';
 import { useState } from 'react';
 
 const breadcrumbs: BreadcrumbItem[] = [{ title: 'User', href: '/dashboard/user' }];
@@ -62,6 +62,7 @@ const sampleUsers: User[] = [
         status: 'active',
     },
 ];
+
 export default function UserManagement() {
     const [searchQuery, setSearchQuery] = useState<string>('');
     const [roleFilter, setRoleFilter] = useState<string>('all');
@@ -69,6 +70,10 @@ export default function UserManagement() {
     const [selectedUsers, setSelectedUsers] = useState<number[]>([]);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
     const [selectedUserToDelete, setSelectedUserToDelete] = useState<number | null>(null);
+    const { props } = usePage();
+    const users = props.users as User[];
+    console.log(users);
+
 
     // Filter users
     const filteredUsers = sampleUsers.filter((user) => {

@@ -13,6 +13,7 @@ class TicketSeeder extends Seeder
         Ticket::truncate();
         Ticket::create([
             'name' => 'Summer Music Festival',
+            'slug' => 'summer-music-festival',
             'artist' => 'Various Artists',
             'date' => '2025-05-16',
             'time' => '16:00',

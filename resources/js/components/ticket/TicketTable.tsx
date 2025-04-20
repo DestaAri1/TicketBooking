@@ -19,8 +19,8 @@ interface TicketTableProps {
     searchQuery: string;
     currentPage: number;
     onPageChange: (page: number) => void;
-    totalItems?: number; // Make this optional for backward compatibility
-    itemsPerPage?: number; // Make this optional for backward compatibility
+    totalItems?: number;
+    itemsPerPage?: number;
 }
 
 const TableHeadItem = [
@@ -46,10 +46,7 @@ export default function TicketTable({
 }: TicketTableProps) {
     const isAllSelected = selectedTickets.length === tickets.length && tickets.length > 0;
 
-    // Use provided totalItems or fallback to estimate based on current data
     const totalItems = explicitTotalItems !== undefined ? explicitTotalItems : tickets.length;
-    console.log(tickets);
-
 
     return (
         <>

@@ -1,6 +1,6 @@
 import { Input } from '@/components/ui/input';
 import { TicketFormData } from '@/types';
-import { Check } from 'lucide-react';
+import { Calendar, Check, Clock, DollarSign, FileText, MapPin, Type, User } from 'lucide-react';
 import { ChangeEvent, FocusEvent } from 'react';
 
 interface TicketFormInputsProps {
@@ -33,7 +33,8 @@ export const TicketFormInputs = ({ formData, handleChange, handleBlur, errors, f
         <div className="space-y-4 sm:space-y-6">
             {/* Title */}
             <div className="relative">
-                <label htmlFor="title" className="mb-1 block text-sm font-medium text-gray-700">
+                <label htmlFor="title" className="mb-1 flex items-center text-sm font-medium text-gray-700">
+                    <Type className="mr-2 h-4 w-4 flex-shrink-0 text-purple-600" />
                     Judul Konser
                 </label>
                 <div className="relative">
@@ -59,7 +60,8 @@ export const TicketFormInputs = ({ formData, handleChange, handleBlur, errors, f
 
             {/* Artist */}
             <div className="relative">
-                <label htmlFor="artist" className="mb-1 block text-sm font-medium text-gray-700">
+                <label htmlFor="artist" className="mb-1 flex items-center text-sm font-medium text-gray-700">
+                    <User className="mr-2 h-4 w-4 flex-shrink-0 text-purple-600" />
                     Nama Artis
                 </label>
                 <div className="relative">
@@ -87,7 +89,8 @@ export const TicketFormInputs = ({ formData, handleChange, handleBlur, errors, f
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 {/* Date */}
                 <div className="relative">
-                    <label htmlFor="date" className="mb-1 block text-sm font-medium text-gray-700">
+                    <label htmlFor="date" className="mb-1 flex items-center text-sm font-medium text-gray-700">
+                        <Calendar className="mr-2 h-4 w-4 flex-shrink-0 text-purple-600" />
                         Tanggal
                     </label>
                     <div className="relative">
@@ -112,7 +115,8 @@ export const TicketFormInputs = ({ formData, handleChange, handleBlur, errors, f
 
                 {/* Time */}
                 <div className="relative">
-                    <label htmlFor="time" className="mb-1 block text-sm font-medium text-gray-700">
+                    <label htmlFor="time" className="mb-1 flex items-center text-sm font-medium text-gray-700">
+                        <Clock className="mr-2 h-4 w-4 flex-shrink-0 text-purple-600" />
                         Jam
                     </label>
                     <div className="relative">
@@ -138,7 +142,8 @@ export const TicketFormInputs = ({ formData, handleChange, handleBlur, errors, f
 
             {/* Venue */}
             <div className="relative">
-                <label htmlFor="venue" className="mb-1 block text-sm font-medium text-gray-700">
+                <label htmlFor="venue" className="mb-1 flex items-center text-sm font-medium text-gray-700">
+                    <MapPin className="mr-2 h-4 w-4 flex-shrink-0 text-purple-600" />
                     Lokasi Venue
                 </label>
                 <div className="relative">
@@ -164,7 +169,8 @@ export const TicketFormInputs = ({ formData, handleChange, handleBlur, errors, f
 
             {/* Price */}
             <div className="relative">
-                <label htmlFor="price" className="mb-1 block text-sm font-medium text-gray-700">
+                <label htmlFor="price" className="mb-1 flex items-center text-sm font-medium text-gray-700">
+                    <DollarSign className="mr-2 h-4 w-4 flex-shrink-0 text-purple-600" />
                     Harga Tiket (Rp)
                 </label>
                 <div className="relative">
@@ -190,7 +196,8 @@ export const TicketFormInputs = ({ formData, handleChange, handleBlur, errors, f
 
             {/* Description */}
             <div className="relative">
-                <label htmlFor="description" className="mb-1 block text-sm font-medium text-gray-700">
+                <label htmlFor="description" className="mb-1 flex items-center text-sm font-medium text-gray-700">
+                    <FileText className="mr-2 h-4 w-4 flex-shrink-0 text-purple-600" />
                     Deskripsi Konser
                 </label>
                 <div className="relative">

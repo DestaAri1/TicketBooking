@@ -1,4 +1,4 @@
-// TicketForm.tsx
+// UpdateTicket.tsx
 import { TicketFormInputs } from '@/components/ticket/ticket-input';
 import { Input } from '@/components/ui/input';
 import { useTicketForm } from '@/hooks/use-ticket';
@@ -6,30 +6,79 @@ import AppLayout from '@/layouts/app-layout';
 import { BreadcrumbItem } from '@/types';
 import { Head } from '@inertiajs/react';
 import { Image as ImageIcon, Music } from 'lucide-react';
-import { JSX } from 'react';
+import { JSX, useEffect } from 'react';
 
-const breadcrumbs: BreadcrumbItem[] = [
-    {
-        title: 'Ticket',
-        href: route('ticket'),
-    },
-    {
-        title: 'Add Ticket',
-        href: route('add-ticket'),
-    },
-];
+interface UpdateTicketProps {
+    ticket: {
+        id: number;
+        name: string;
+        artist: string;
+        date: string;
+        time: string;
+        venue: string;
+        price: string;
+        description: string;
+        image: string;
+        image_url: string;
+    };
+}
 
-export default function AddTicket(): JSX.Element {
-    const { formData, errors, fieldStatus, imagePreview, fileInputRef, handleChange, handleBlur, handleImageChange, handleSubmit, processing } =
-        useTicketForm();
+export default function UpdateTicket({ ticket }: UpdateTicketProps): JSX.Element {
+    const {
+        formData,
+        setFormData,
+        errors,
+        fieldStatus,
+        imagePreview,
+        setImagePreview,
+        fileInputRef,
+        handleChange,
+        handleBlur,
+        handleImageChange,
+        handleSubmit,
+        processing,
+    } = useTicketForm();
 
-    const submitCreate = () => {
-        handleSubmit(route('create-ticket'), 'post');
+    const breadcrumbs: BreadcrumbItem[] = [
+        {
+            title: 'Ticket',
+            href: route('ticket'),
+        },
+        {
+            title: 'Update Ticket',
+            href: route('ticket.edit', ticket.id),
+        },
+    ];
+
+    // Populate form with existing ticket data when component mounts
+    useEffect(() => {
+        if (ticket) {
+            setFormData({
+                title: ticket.name,
+                artist: ticket.artist,
+                date: ticket.date,
+                time: ticket.time,
+                venue: ticket.venue,
+                price: ticket.price,
+                description: ticket.description,
+                image: ticket.image,
+            });
+
+            // Set the image preview if there's an existing image
+            if (ticket.image_url) {
+                setImagePreview(ticket.image_url);
+            }
+        }
+    }, [ticket]);
+
+    const submitUpdate = () => {
+        // Use the PUT method for updates
+        handleSubmit(route('update-ticket', { id: ticket.id }), 'put');
     };
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Add Ticket" />
+            <Head title="Update Ticket" />
 
             <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
                 {/* Content Card */}
@@ -157,11 +206,11 @@ export default function AddTicket(): JSX.Element {
                             </button>
                             <button
                                 type="button"
-                                onClick={submitCreate}
+                                onClick={submitUpdate}
                                 disabled={processing}
                                 className="w-full rounded-lg bg-purple-600 px-4 py-2 text-sm font-medium text-white shadow-md transition-all duration-300 hover:bg-purple-700 disabled:bg-purple-400 sm:w-auto sm:px-6 sm:py-2.5"
                             >
-                                {processing ? 'Menyimpan...' : 'Simpan Tiket'}
+                                {processing ? 'Memperbarui...' : 'Perbarui Tiket'}
                             </button>
                         </div>
                     </div>

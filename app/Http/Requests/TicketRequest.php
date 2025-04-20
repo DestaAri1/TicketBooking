@@ -21,7 +21,7 @@ class TicketRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
+        $rules = [
             'title' => 'required|string|max:255',
             'artist' => 'required|string|max:255',
             'date' => 'required|date',
@@ -29,7 +29,13 @@ class TicketRequest extends FormRequest
             'venue' => 'required|string|max:255',
             'price' => 'required|numeric',
             'description' => 'required|string',
-            'image' => 'required|image|max:5120',
         ];
+
+        // Only require image if imagePreview is not provided
+        if (!$this->imagePreview) {
+            $rules['image'] = 'required|image|max:5120';
+        }
+
+        return $rules;
     }
 }

@@ -8,12 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Ticket extends Model
 {
-    use HasFactory, HasUuids;
+    use HasFactory;
 
     protected $table = 'tickets';
 
     protected $fillable = [
         'name',
+        'slug',
         'artist',
         'date',
         'time',

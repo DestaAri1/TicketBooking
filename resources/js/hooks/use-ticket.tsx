@@ -10,6 +10,7 @@ export const useTicketForm = () => {
         setData: setFormData,
         errors: serverErrors,
         post,
+        put,
         processing,
     } = useForm<TicketFormData & { imagePreview?: string }>({
         title: '',
@@ -60,6 +61,7 @@ export const useTicketForm = () => {
             return '';
         },
         image: (value: string) => {
+            // For updates, image isn't required if there's already an image preview
             if (!imagePreview && !value) return 'Poster konser wajib diunggah';
             return '';
         },
@@ -141,7 +143,7 @@ export const useTicketForm = () => {
         }
     };
 
-    const handleSubmit = () => {
+    const handleSubmit = (url = route('create-ticket'), method = 'post') => {
         if (!validation.validateForm()) {
             const firstErrorElement = document.querySelector('[aria-invalid="true"]');
             if (firstErrorElement) {
@@ -150,10 +152,10 @@ export const useTicketForm = () => {
             return;
         }
 
-        post(route('create-ticket'), {
+        const submitOptions = {
             preserveScroll: true,
             preserveState: true,
-            onError: (errors) => {
+            onError: (errors: Record<string, string>) => {
                 Object.keys(errors).forEach((key) => {
                     validation.setFieldStatus((prev) => ({
                         ...prev,
@@ -162,17 +164,29 @@ export const useTicketForm = () => {
                 });
                 validation.setErrors((prev) => ({ ...prev, ...errors }));
             },
-        });
+        };
+
+        if (method === 'post') {
+            post(url, submitOptions);
+        } else if (method === 'put') {
+            put(url, submitOptions);
+        }
     };
 
     const combinedErrors = { ...validation.errors, ...serverErrors } as Record<string, string>;
 
     return {
         formData,
+        setFormData: (data: Partial<TicketFormData>) => {
+            Object.entries(data).forEach(([key, value]) => {
+                setFormData(key as keyof TicketFormData, value);
+            });
+        },
         errors: combinedErrors,
         fieldStatus: validation.fieldStatus,
         processing,
         imagePreview,
+        setImagePreview,
         fileInputRef,
         handleChange,
         handleBlur,

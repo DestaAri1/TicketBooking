@@ -12,18 +12,10 @@ use Inertia\Response;
 
 class TicketController extends Controller
 {
-    protected $idHasher;
-
-    public function __construct(IdHasher $idHasher)
-    {
-        $this->idHasher = $idHasher;
-    }
-
     public function index(): Response
     {
         $tickets = Ticket::all()->map(function($ticket) {
             $ticket->imageUrl = url($ticket->imageUrl);
-            $ticket->id = $this->idHasher->encode($ticket->id); // Menambahkan hash ID
             return $ticket;
         });
 
@@ -44,6 +36,8 @@ class TicketController extends Controller
             $imagePath = ImageUploader::uploadBase64($request->imagePreview);
         } elseif ($request->hasFile('image') && $request->file('image')->isValid()) {
             $imagePath = ImageUploader::upload($request->file('image'));
+        } else {
+            return redirect()->back()->withErrors(['image' => 'Poster konser wajib diunggah']);
         }
 
         // Create the ticket
@@ -63,11 +57,11 @@ class TicketController extends Controller
 
     public function edit($id)
     {
-        $id = $this->idHasher->decode($id);
-        // dd($id);
-        if (!$id) {
-            abort(404);
-        }
+        // $id = $this->idHasher->decode($id);
+        // // dd($id);
+        // if (!$id) {
+        //     abort(404);
+        // }
 
         $ticket = Ticket::findOrFail($id);
         // lanjutkan proses edit
