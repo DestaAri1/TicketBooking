@@ -32,7 +32,7 @@ export function usePagination<T>({ totalItems, itemsPerPage, initialPage = 1, on
         if (currentPage > totalPages && totalPages > 0 && currentPage !== 1) {
             setCurrentPage(totalPages);
         }
-    }, [totalItems, itemsPerPage, totalPages]); // Remove currentPage from dependencies
+    }, [totalItems, itemsPerPage, totalPages, currentPage]); // Remove currentPage from dependencies
 
     // Handle page change with bounds checking
     const handlePageChange = useCallback(

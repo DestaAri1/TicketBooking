@@ -28,8 +28,6 @@ export default function AddTicket(): JSX.Element {
             <Head title="Add Ticket" />
 
             <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
-                {/* Header Card */}
-
                 {/* Content Card */}
                 <div className="rounded-lg bg-white p-4 transition-all duration-300 sm:p-6 md:p-8">
                     <div className="w-full">

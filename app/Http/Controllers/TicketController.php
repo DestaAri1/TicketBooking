@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\IdHasher;
 use App\Helpers\ImageUploader;
 use App\Http\Requests\TicketRequest;
 use App\Models\Ticket;
@@ -11,11 +12,18 @@ use Inertia\Response;
 
 class TicketController extends Controller
 {
+    protected $idHasher;
+
+    public function __construct(IdHasher $idHasher)
+    {
+        $this->idHasher = $idHasher;
+    }
+
     public function index(): Response
     {
         $tickets = Ticket::all()->map(function($ticket) {
-            // Pastikan imageUrl hanya berisi nama file tanpa folder
             $ticket->imageUrl = url($ticket->imageUrl);
+            $ticket->id = $this->idHasher->encode($ticket->id); // Menambahkan hash ID
             return $ticket;
         });
 
@@ -52,4 +60,21 @@ class TicketController extends Controller
 
         return redirect()->route('ticket')->with('success', 'Ticket created successfully!');
     }
+
+    public function edit($id)
+    {
+        $id = $this->idHasher->decode($id);
+        // dd($id);
+        if (!$id) {
+            abort(404);
+        }
+
+        $ticket = Ticket::findOrFail($id);
+        // lanjutkan proses edit
+
+        return Inertia::render('ticket/EditTicket', [
+            'ticket' => $ticket
+        ]);
+    }
+
 }
