@@ -53,7 +53,7 @@ export default function UpdateTicket({ ticket }: UpdateTicketProps): JSX.Element
     // Populate form with existing ticket data when component mounts
     useEffect(() => {
         if (ticket) {
-            setFormData({
+            const ticketData = {
                 title: ticket.name,
                 artist: ticket.artist,
                 date: ticket.date,
@@ -62,7 +62,10 @@ export default function UpdateTicket({ ticket }: UpdateTicketProps): JSX.Element
                 price: ticket.price,
                 description: ticket.description,
                 image: ticket.image,
-            });
+            };
+
+            // Set form data and automatically validate all fields
+            setFormData(ticketData);
 
             // Set the image preview if there's an existing image
             if (ticket.image_url) {
@@ -73,7 +76,7 @@ export default function UpdateTicket({ ticket }: UpdateTicketProps): JSX.Element
 
     const submitUpdate = () => {
         // Use the PUT method for updates
-        handleSubmit(route('update-ticket', { id: ticket.id }), 'put');
+        handleSubmit(route('ticket-update', ticket.id), 'put');
     };
 
     return (

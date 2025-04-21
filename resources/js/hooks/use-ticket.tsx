@@ -1,4 +1,4 @@
-// useTicketForm.tsx
+// useTicketForm.tsx - Fixed version
 import { TicketFormData } from '@/types';
 import { useForm } from '@inertiajs/react';
 import { ChangeEvent, FocusEvent, useRef, useState } from 'react';
@@ -60,19 +60,60 @@ export const useTicketForm = () => {
             if (!value.trim()) return 'Deskripsi konser wajib diisi';
             return '';
         },
-        image: (value: string) => {
-            // For updates, image isn't required if there's already an image preview
-            if (!imagePreview && !value) return 'Poster konser wajib diunggah';
-            return '';
-        },
     };
 
     // Use our custom validation hook
     const validation = useFormValidation(formData, validationRules);
 
     const [imagePreview, setImagePreview] = useState<string>('');
-    const [imageFile, setImageFile] = useState<File | null>(null);
+
     const fileInputRef = useRef<HTMLInputElement | null>(null);
+
+    // New function to validate all fields for initial data
+    const validateInitialData = (data: Partial<TicketFormData>) => {
+        const fieldsToUpdate = Object.keys(data) as Array<keyof TicketFormData>;
+
+        // Mark all fields as touched and validate them
+        const newFieldStatus = { ...validation.fieldStatus };
+        const newErrors = { ...validation.errors };
+
+        fieldsToUpdate.forEach((field) => {
+            const value = data[field];
+            // Check if value is defined and field has validation rules
+            if (value !== undefined && value !== null && field in validationRules) {
+                // Mark the field as touched
+                newFieldStatus[field] = {
+                    ...newFieldStatus[field],
+                    touched: true,
+                };
+
+                // Validate the field - safely convert to string
+                const errorMessage = validationRules[field](String(value));
+                if (errorMessage) {
+                    newErrors[field] = errorMessage;
+                    newFieldStatus[field].isValid = false;
+                } else {
+                    // Remove any existing error
+                    delete newErrors[field];
+                    newFieldStatus[field].isValid = true;
+                }
+            }
+        });
+
+        // Update validation state
+        validation.setFieldStatus(newFieldStatus);
+        validation.setErrors(newErrors);
+
+        // Update validation data safely
+        Object.entries(data).forEach(([key, value]) => {
+            if (value !== undefined && value !== null) {
+                validation.setData(key as keyof TicketFormData, String(value));
+            } else {
+                // Handle null or undefined values - set as empty string
+                validation.setData(key as keyof TicketFormData, '');
+            }
+        });
+    };
 
     const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
@@ -131,7 +172,6 @@ export const useTicketForm = () => {
                 image: { ...prev.image, isValid: true },
             }));
 
-            setImageFile(file);
             const reader = new FileReader();
             reader.onloadend = () => {
                 const base64String = reader.result as string;
@@ -178,9 +218,15 @@ export const useTicketForm = () => {
     return {
         formData,
         setFormData: (data: Partial<TicketFormData>) => {
+            // First, update the form data
             Object.entries(data).forEach(([key, value]) => {
-                setFormData(key as keyof TicketFormData, value);
+                // Handle null values by converting them to empty strings
+                const safeValue = value === null || value === undefined ? '' : value;
+                setFormData(key as keyof TicketFormData, safeValue);
             });
+
+            // Then validate all fields
+            validateInitialData(data);
         },
         errors: combinedErrors,
         fieldStatus: validation.fieldStatus,
@@ -192,5 +238,7 @@ export const useTicketForm = () => {
         handleBlur,
         handleImageChange,
         handleSubmit,
+        // Export the validateInitialData function for direct use in components
+        validateInitialData,
     };
 };

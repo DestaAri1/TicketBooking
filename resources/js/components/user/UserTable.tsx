@@ -10,6 +10,7 @@ import { TablePagination } from '../table/TablePagination';
 import { TableRow } from '../table/TableRow';
 import EmptyState from './EmptyState';
 import RoleBadge from './RoleBadge';
+import { formatDateToIndonesian } from '@/helpers/dateConverter';
 
 interface UserTableProps {
     users: User[];
@@ -71,7 +72,7 @@ export default function UserTable({
                                 </TableCell>
 
                                 <TableCell>
-                                    <span className="text-gray-500">{user.created_at}</span>
+                                    <span className="text-gray-500">{formatDateToIndonesian(user.created_at)}</span>
                                 </TableCell>
 
                                 <TableCell>

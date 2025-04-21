@@ -18,6 +18,8 @@ Route::middleware(['auth', 'verified'])->prefix('dashboard')->group(function () 
         Route::get('/add-ticket', [TicketController::class, 'addPage'])->name('add-ticket');
         Route::post('/create-ticket', [TicketController::class, 'create'])->name('create-ticket');
         Route::get('/{id}/edit', [TicketController::class, 'edit'])->name('ticket.edit');
+        Route::put('/{id}/update', [TicketController::class, 'update'])->name('ticket-update');
+        Route::delete('/{id}/delete', [TicketController::class, 'delete'])->name('ticket.delete');
     });
 
     Route::prefix('/user')->group(function() {

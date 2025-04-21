@@ -35,11 +35,11 @@ export interface User {
     id: number;
     name: string;
     email: string;
-    avatar?: string;
-    email_verified_at: string | null;
+    role: 0 | 1 | 2;
     created_at: string;
     updated_at: string;
-    [key: string]: unknown; // This allows for additional properties...
+    email_verified_at: string;
+    status: 0 | 1;
 }
 
 export interface TicketFormData {
@@ -77,13 +77,3 @@ export interface TicketFiltersProps {
     setSortBy: (value: string) => void;
 }
 
-export interface User {
-    id: number;
-    name: string;
-    email: string;
-    role: 'admin' | 'employee' | 'user';
-    created_at: string;
-    updated_at: string;
-    email_verified_at: string;
-    status: 'active' | 'inactive';
-}

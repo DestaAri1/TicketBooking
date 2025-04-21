@@ -6,7 +6,7 @@ import AppLayout from '@/layouts/app-layout';
 import { BreadcrumbItem } from '@/types';
 import { Head } from '@inertiajs/react';
 import { Image as ImageIcon, Music } from 'lucide-react';
-import { JSX } from 'react';
+import { JSX, useState } from 'react';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -23,8 +23,38 @@ export default function AddTicket(): JSX.Element {
     const { formData, errors, fieldStatus, imagePreview, fileInputRef, handleChange, handleBlur, handleImageChange, handleSubmit, processing } =
         useTicketForm();
 
+    // Add local state to track image validation error
+    const [localImageError, setLocalImageError] = useState<string>('');
+
+    // Combine hook errors with local image error
+    const combinedErrors = {
+        ...errors,
+        image: errors.image || localImageError,
+    };
+
     const submitCreate = () => {
+        // Validate if image is empty before submitting
+        if (!imagePreview) {
+            setLocalImageError('Gambar poster konser wajib diunggah');
+            // Scroll to the image upload section
+            const imageSection = document.querySelector('.border-dashed');
+            if (imageSection) {
+                imageSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+            return;
+        }
+
+        // Clear error if image exists
+        setLocalImageError('');
+
+        // Proceed with form submission
         handleSubmit(route('create-ticket'), 'post');
+    };
+
+    // Clear local image error when image is uploaded
+    const handleImageChangeWithValidation = (e: React.ChangeEvent<HTMLInputElement>) => {
+        handleImageChange(e);
+        setLocalImageError('');
     };
 
     return (
@@ -42,18 +72,18 @@ export default function AddTicket(): JSX.Element {
                                 formData={formData}
                                 handleChange={handleChange}
                                 handleBlur={handleBlur}
-                                errors={errors}
+                                errors={combinedErrors}
                                 fieldStatus={fieldStatus}
                             />
                             {/* Right Column - Image Upload */}
                             <div className="mt-6 lg:mt-0">
                                 <label className="mb-1 flex items-center text-xs font-medium text-gray-700 sm:mb-2 sm:text-sm">
                                     <ImageIcon className="mr-1 h-3 w-3 flex-shrink-0 text-purple-600 sm:mr-2 sm:h-4 sm:w-4" />
-                                    Poster Konser
+                                    Poster Konser <span className="ml-1 text-red-500">*</span>
                                 </label>
 
                                 <div
-                                    className={`border-2 ${imagePreview ? 'border-purple-400' : 'border-dashed border-gray-300'} ${errors.image ? 'border-red-300 ring-1 ring-red-300' : ''} cursor-pointer rounded-lg p-3 text-center transition-all duration-300 hover:border-purple-500 sm:p-4`}
+                                    className={`border-2 ${imagePreview ? 'border-purple-400' : 'border-dashed border-gray-300'} ${combinedErrors.image ? 'border-red-300 ring-1 ring-red-300' : ''} cursor-pointer rounded-lg p-3 text-center transition-all duration-300 hover:border-purple-500 sm:p-4`}
                                     onClick={() => fileInputRef.current?.click()}
                                 >
                                     {!imagePreview ? (
@@ -85,12 +115,12 @@ export default function AddTicket(): JSX.Element {
                                         accept="image/*"
                                         name="image"
                                         className="hidden"
-                                        onChange={handleImageChange}
+                                        onChange={handleImageChangeWithValidation}
                                     />
                                 </div>
 
                                 {/* Display image validation error */}
-                                {errors.image && <p className="mt-1 text-xs font-medium text-red-600">{errors.image}</p>}
+                                {combinedErrors.image && <p className="mt-1 text-xs font-medium text-red-600">{combinedErrors.image}</p>}
 
                                 {/* Ticket Preview Card */}
                                 {imagePreview && (

@@ -23,7 +23,7 @@ return new class extends Migration
             $table->enum('status', [0,1,2,3,4])->default(0);
             $table->integer('sales')->default(0);
             $table->text('description')->nullable();
-            $table->string('imageUrl')->nullable();
+            $table->string('imageUrl')->default('default_pic.jpg');
             $table->timestamps();
             $table->softDeletes();
         });

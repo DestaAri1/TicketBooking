@@ -13,7 +13,20 @@ class UserSeeder extends Seeder
         User::create([
             'name' => 'Admin MusicTix',
             'email' => 'admin@gmail.com',
-            'password' => '12345678'
+            'password' => '12345678',
+            'role' => "0",
+        ]);
+        User::create([
+            'name' => 'Employee MusicTix',
+            'email' => 'employee@gmail.com',
+            'password' => '12345678',
+            'role' => "1",
+        ]);
+        User::create([
+            'name' => 'User MusicTix',
+            'email' => 'adminuser@gmail.com',
+            'password' => '12345678',
+            'role' => "2",
         ]);
     }
 }

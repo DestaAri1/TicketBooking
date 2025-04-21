@@ -10,73 +10,18 @@ import { useState } from 'react';
 
 const breadcrumbs: BreadcrumbItem[] = [{ title: 'User', href: '/dashboard/user' }];
 
-const sampleUsers: User[] = [
-    {
-        id: 1,
-        name: 'John Doe',
-        email: 'john.doe@example.com',
-        role: 'admin',
-        created_at: '2025-03-15',
-        updated_at: '2025-03-15',
-        email_verified_at: '2025-03-15',
-        status: 'active',
-    },
-    {
-        id: 2,
-        name: 'Jane Smith',
-        email: 'jane.smith@example.com',
-        role: 'employee',
-        created_at: '2025-03-18',
-        updated_at: '2025-03-18',
-        email_verified_at: '2025-03-18',
-        status: 'active',
-    },
-    {
-        id: 3,
-        name: 'Alice Johnson',
-        email: 'alice.johnson@example.com',
-        role: 'user',
-        created_at: '2025-03-20',
-        updated_at: '2025-03-20',
-        email_verified_at: null, // If email isn't verified
-        status: 'inactive',
-    },
-    {
-        id: 4,
-        name: 'Bob Brown',
-        email: 'bob.brown@example.com',
-        role: 'employee',
-        created_at: '2025-03-22',
-        updated_at: '2025-03-22',
-        email_verified_at: '2025-03-22',
-        status: 'active',
-    },
-    {
-        id: 5,
-        name: 'Emma Wilson',
-        email: 'emma.wilson@example.com',
-        role: 'user',
-        created_at: '2025-03-25',
-        updated_at: '2025-03-25',
-        email_verified_at: '2025-03-25',
-        status: 'active',
-    },
-];
-
 export default function UserManagement() {
     const [searchQuery, setSearchQuery] = useState<string>('');
-    const [roleFilter, setRoleFilter] = useState<string>('all');
+    const [roleFilter, setRoleFilter] = useState<number | string>('all');
     const [sortBy, setSortBy] = useState<string>('newest');
     const [selectedUsers, setSelectedUsers] = useState<number[]>([]);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
     const [selectedUserToDelete, setSelectedUserToDelete] = useState<number | null>(null);
     const { props } = usePage();
     const users = props.users as User[];
-    console.log(users);
-
 
     // Filter users
-    const filteredUsers = sampleUsers.filter((user) => {
+    const filteredUsers = users.filter((user) => {
         const matchesSearch =
             user.name.toLowerCase().includes(searchQuery.toLowerCase()) || user.email.toLowerCase().includes(searchQuery.toLowerCase());
         const matchesRole = roleFilter === 'all' || user.role === roleFilter;
@@ -140,7 +85,7 @@ export default function UserManagement() {
                 <UserFilters
                     searchQuery={searchQuery}
                     setSearchQuery={setSearchQuery}
-                    roleFilter={roleFilter}
+                    roleFilter={roleFilter as string}
                     setRoleFilter={setRoleFilter}
                     sortBy={sortBy}
                     setSortBy={setSortBy}

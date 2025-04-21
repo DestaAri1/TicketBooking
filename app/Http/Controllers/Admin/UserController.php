@@ -12,7 +12,7 @@ use Inertia\Response;
 class UserController extends Controller
 {
     public function index():Response {
-        $users = User::all();
+        $users = User::orderBy('id')->get();
         return Inertia::render('user', [
             'users' => $users
         ]);

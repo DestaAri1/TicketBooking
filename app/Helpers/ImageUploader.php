@@ -6,13 +6,7 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Log;
 
 class ImageUploader {
-    /**
-     * Upload an image file to the specified folder.
-     *
-     * @param UploadedFile $file
-     * @param string $folder Relative to the public/ directory
-     * @return string|null The image path or null on failure
-     */
+
     public static function upload(UploadedFile $file, string $folder = 'assets/ticket'): ?string
     {
         try {
@@ -40,13 +34,6 @@ class ImageUploader {
         }
     }
 
-    /**
-     * Upload a base64 encoded image to the specified folder.
-     *
-     * @param string $base64Image The base64 encoded image string
-     * @param string $folder Relative to the public/ directory
-     * @return string|null The image path or null on failure
-     */
     public static function uploadBase64(string $base64Image, string $folder = 'assets/ticket'): ?string
     {
         try {

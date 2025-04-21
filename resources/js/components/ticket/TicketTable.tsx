@@ -9,6 +9,7 @@ import { TablePagination } from '../table/TablePagination';
 import { TableRow } from '../table/TableRow';
 import EmptyState from './EmptyState';
 import StatusBadge from './StatusBadge';
+import { formatDateToIndonesian } from '@/helpers/dateConverter';
 
 interface TicketTableProps {
     tickets: Ticket[];
@@ -84,7 +85,7 @@ export default function TicketTable({
                                     <div className="flex flex-col">
                                         <div className="flex items-center">
                                             <Calendar className="mr-1 h-3 w-3 text-gray-400" />
-                                            {ticket.date}
+                                            {formatDateToIndonesian(ticket.date)}
                                         </div>
                                         <div className="mt-1 flex items-center">
                                             <Clock className="mr-1 h-3 w-3 text-gray-400" />
